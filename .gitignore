@@ -1,0 +1,3 @@
+/Dockerfile.circle
+/Dockerfile.ruby
+/circleci-ruby-snapshot-image

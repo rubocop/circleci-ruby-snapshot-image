@@ -1,0 +1,49 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.5
+    environment:
+      RUBY_BASE_REPO: bquorning/ruby-snapshot
+      RUBY_TAG: snapshot
+    steps:
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Sign in to docker
+          command: echo $DOCKER_PASSWORD | docker login --username $DOCKER_USER --password-stdin
+      - run:
+          name: Fetch the Dockerfile for creating a Ruby image
+          command: curl https://raw.githubusercontent.com/bquorning/ruby-snapshot/master/snapshot/stretch/Dockerfile --output Dockerfile.ruby
+      - run:
+          name: Generate a Dockerfile for creating a CircleCI variant of the Ruby image
+          command: |
+            git clone --depth 1 --branch master https://github.com/circleci/circleci-images.git
+            pushd circleci-images/ruby
+              echo "Tags: $RUBY_TAG" > manifest
+
+              MANIFEST_SOURCE="file://$(pwd)/manifest" \
+                BASE_REPO="$RUBY_BASE_REPO" \
+                NEW_ORG="bquorning" \
+                NAME="Ruby" \
+                source ../shared/images/generate.sh
+            popd
+            cp -v circleci-images/ruby/images/snapshot/Dockerfile Dockerfile.circle
+      - run:
+          name: Build the Ruby image
+          command: |
+            export RUBY_IMAGE_TAG=$RUBY_BASE_REPO:$RUBY_TAG
+            docker build -f Dockerfile.ruby -t "$RUBY_IMAGE_TAG" .
+      - run:
+          name: Build the CircleCI variant of the Ruby image
+          command: docker build -f Dockerfile.circle -t bquorning/circleci-ruby-snapshot:latest .
+      - run:
+          name: Push the image to Docker Hub
+          command: docker push bquorning/circleci-ruby-snapshot:latest
+
+# workflows:
+#   version: 2
+#   build:
+#     triggers:
+#       - schedule:
+#           cron: "0 0 * * *"
