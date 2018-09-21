@@ -41,9 +41,19 @@ jobs:
           name: Push the image to Docker Hub
           command: docker push bquorning/circleci-ruby-snapshot:latest
 
-# workflows:
-#   version: 2
-#   build:
-#     triggers:
-#       - schedule:
-#           cron: "0 0 * * *"
+workflows:
+  version: 2
+  # It looks like the snapshots are currently released to
+  # https://cache.ruby-lang.org/pub/ruby/ around 12:30-12:40. E.g.
+  # 2018-09-21T12:40:44.000Z
+  # We rebuild the master branch every day at 13:30.
+  daily:
+    jobs:
+      - build
+    triggers:
+      - schedule:
+          cron: "30 13 * * *"
+          filters:
+            branches:
+              only:
+                - master
