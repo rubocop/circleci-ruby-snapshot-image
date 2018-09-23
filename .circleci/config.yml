@@ -1,5 +1,18 @@
 version: 2
 jobs:
+  check-ruby-dockerfile-generation:
+    docker:
+      - image: circleci/ruby:2.5
+    environment:
+      GIT_PAGER: cat
+    steps:
+      - checkout
+      - run:
+          name: Re-generate Dockerfile.ruby
+          command: ./generate-ruby-dockerfile.sh
+      - run:
+          name: Check that Dockerfile.ruby is unchanged
+          command: git diff --exit-code Dockerfile.ruby
   build:
     docker:
       - image: circleci/ruby:2.5
@@ -12,9 +25,6 @@ jobs:
       - run:
           name: Sign in to docker
           command: echo $DOCKER_PASSWORD | docker login --username $DOCKER_USER --password-stdin
-      - run:
-          name: Fetch the Dockerfile for creating a Ruby image
-          command: curl https://raw.githubusercontent.com/bquorning/ruby-snapshot/master/snapshot/stretch/Dockerfile --output Dockerfile.ruby
       - run:
           name: Generate a Dockerfile for creating a CircleCI variant of the Ruby image
           command: |
@@ -43,12 +53,17 @@ jobs:
 
 workflows:
   version: 2
+  check-dockerfile:
+    jobs:
+      - check-ruby-dockerfile-generation
+
   # It looks like the snapshots are currently released to
   # https://cache.ruby-lang.org/pub/ruby/ around 12:30-12:40. E.g.
   # 2018-09-21T12:40:44.000Z
   # We rebuild the master branch every day at 13:30.
   daily:
     jobs:
+      - check-ruby-dockerfile-generation
       - build
     triggers:
       - schedule:
