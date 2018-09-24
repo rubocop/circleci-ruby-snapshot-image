@@ -39,10 +39,13 @@ jobs:
           name: Build the Ruby image
           command: docker build -f Dockerfile.ruby -t rubocophq/ruby-snapshot:latest .
       - run:
+          name: Push the Ruby image to Docker Hub
+          command: docker push rubocophq/ruby-snapshot:latest
+      - run:
           name: Build the CircleCI variant of the Ruby image
           command: docker build -f Dockerfile.circle -t rubocophq/circleci-ruby-snapshot:latest .
       - run:
-          name: Push the image to Docker Hub
+          name: Push the CircleCI image to Docker Hub
           command: docker push rubocophq/circleci-ruby-snapshot:latest
 
 workflows:
