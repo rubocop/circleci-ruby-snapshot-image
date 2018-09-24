@@ -6,6 +6,12 @@ pushd $repository/ruby
 
 # We only want to build a "latest" tagged image
 TAG="latest"
+
+# The manifest is usually a file like e.g.
+# https://github.com/docker-library/official-images/blob/master/library/ruby
+# that the circleci-images script fetches with `curl`.
+# To make things easy, we write a file in the same format, with one tag (latest)
+# and tell the script that this file is available with the `file:` protocol.
 echo "Tags: ${TAG}" > manifest
 
 # Builds a new Docker image with BASE_REPO:TAG as its base image.
