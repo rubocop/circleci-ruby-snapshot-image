@@ -37,13 +37,13 @@ jobs:
           command: echo $DOCKER_PASSWORD | docker login --username $DOCKER_USER --password-stdin
       - run:
           name: Build the Ruby image
-          command: docker build -f Dockerfile.ruby -t bquorning/ruby-snapshot:latest .
+          command: docker build -f Dockerfile.ruby -t rubocophq/ruby-snapshot:latest .
       - run:
           name: Build the CircleCI variant of the Ruby image
-          command: docker build -f Dockerfile.circle -t bquorning/circleci-ruby-snapshot:latest .
+          command: docker build -f Dockerfile.circle -t rubocophq/circleci-ruby-snapshot:latest .
       - run:
           name: Push the image to Docker Hub
-          command: docker push bquorning/circleci-ruby-snapshot:latest
+          command: docker push rubocophq/circleci-ruby-snapshot:latest
 
 workflows:
   version: 2
