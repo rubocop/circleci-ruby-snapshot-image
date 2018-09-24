@@ -16,7 +16,7 @@ echo "Tags: ${TAG}" > manifest
 
 # Builds a new Docker image with BASE_REPO:TAG as its base image.
 MANIFEST_SOURCE="file://$repository/ruby/manifest" \
-  BASE_REPO="bquorning/ruby-snapshot" \
+  BASE_REPO="rubocophq/ruby-snapshot" \
   NAME="Ruby" \
   source ../shared/images/generate.sh
 
