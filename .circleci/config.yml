@@ -29,9 +29,6 @@ jobs:
   build:
     docker:
       - image: circleci/ruby:2.5
-    environment:
-      RUBY_BASE_REPO: bquorning/ruby-snapshot
-      RUBY_TAG: latest
     steps:
       - setup_remote_docker:
           docker_layer_caching: true
@@ -40,9 +37,7 @@ jobs:
           command: echo $DOCKER_PASSWORD | docker login --username $DOCKER_USER --password-stdin
       - run:
           name: Build the Ruby image
-          command: |
-            export RUBY_IMAGE_TAG=$RUBY_BASE_REPO:$RUBY_TAG
-            docker build -f Dockerfile.ruby -t "$RUBY_IMAGE_TAG" .
+          command: docker build -f Dockerfile.ruby -t bquorning/ruby-snapshot:latest .
       - run:
           name: Build the CircleCI variant of the Ruby image
           command: docker build -f Dockerfile.circle -t bquorning/circleci-ruby-snapshot:latest .
