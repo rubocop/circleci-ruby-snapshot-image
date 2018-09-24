@@ -31,7 +31,7 @@ jobs:
       - image: circleci/ruby:2.5
     environment:
       RUBY_BASE_REPO: bquorning/ruby-snapshot
-      RUBY_TAG: snapshot
+      RUBY_TAG: latest
     steps:
       - setup_remote_docker:
           docker_layer_caching: true
