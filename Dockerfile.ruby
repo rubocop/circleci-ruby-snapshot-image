@@ -11,7 +11,7 @@ RUN mkdir -p /usr/local/etc \
 
 
 ENV RUBYGEMS_VERSION 3.0.1
-ENV BUNDLER_VERSION 1.17.2
+ENV BUNDLER_VERSION 1.17.3
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
