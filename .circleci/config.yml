@@ -4,8 +4,6 @@ jobs:
   check-ruby-dockerfile-generation:
     docker:
       - image: circleci/ruby
-    environment:
-      GIT_PAGER: cat
     steps:
       - checkout
       - run:
@@ -13,13 +11,11 @@ jobs:
           command: ./generate-ruby-dockerfile.sh
       - run:
           name: Check that Dockerfile.ruby is unchanged
-          command: git diff --exit-code Dockerfile.ruby
+          command: git --no-pager diff --exit-code Dockerfile.ruby
 
   check-circle-dockerfile-generation:
     docker:
       - image: circleci/ruby
-    environment:
-      GIT_PAGER: cat
     steps:
       - checkout
       - run:
@@ -27,7 +23,7 @@ jobs:
           command: ./generate-circle-dockerfile.sh
       - run:
           name: Check that Dockerfile.circle is unchanged
-          command: git diff --exit-code Dockerfile.circle
+          command: git --no-pager diff --exit-code Dockerfile.circle
 
   build:
     docker:
