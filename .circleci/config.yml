@@ -1,8 +1,9 @@
 version: 2
 jobs:
+
   check-ruby-dockerfile-generation:
     docker:
-      - image: circleci/ruby:2.5
+      - image: circleci/ruby
     environment:
       GIT_PAGER: cat
     steps:
@@ -13,9 +14,10 @@ jobs:
       - run:
           name: Check that Dockerfile.ruby is unchanged
           command: git diff --exit-code Dockerfile.ruby
+
   check-circle-dockerfile-generation:
     docker:
-      - image: circleci/ruby:2.5
+      - image: circleci/ruby
     environment:
       GIT_PAGER: cat
     steps:
@@ -26,9 +28,10 @@ jobs:
       - run:
           name: Check that Dockerfile.circle is unchanged
           command: git diff --exit-code Dockerfile.circle
+
   build:
     docker:
-      - image: circleci/ruby:2.5
+      - image: circleci/ruby
     steps:
       - checkout
       - setup_remote_docker:
