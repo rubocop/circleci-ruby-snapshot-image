@@ -10,7 +10,7 @@ RUN mkdir -p /usr/local/etc \
 
 
 
-ENV RUBYGEMS_VERSION 3.0.1
+ENV RUBYGEMS_VERSION 3.0.2
 ENV BUNDLER_VERSION 1.17.3
 
 # some of ruby's build scripts are written in ruby
