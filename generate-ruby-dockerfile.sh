@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-curl https://raw.githubusercontent.com/docker-library/ruby/master/2.5/stretch/Dockerfile |
+curl https://raw.githubusercontent.com/docker-library/ruby/master/2.6/stretch/Dockerfile |
   sed 's/^ENV.*RUBY_MAJOR .*$//' |
   sed 's/^ENV.*RUBY_VERSION .*$//' |
   sed 's/^ENV.*RUBY_DOWNLOAD_SHA256 .*$//' |
