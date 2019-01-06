@@ -10,8 +10,6 @@ RUN mkdir -p /usr/local/etc \
 
 
 
-ENV RUBYGEMS_VERSION 3.0.2
-ENV BUNDLER_VERSION 2.0.1
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
@@ -57,10 +55,8 @@ RUN set -ex \
 	&& apt-get purge -y --auto-remove $buildDeps \
 	&& cd / \
 	&& rm -r /usr/src/ruby \
-	\
-	&& gem update --system "$RUBYGEMS_VERSION" \
-	&& gem install bundler --version "$BUNDLER_VERSION" --force \
-	&& rm -r /root/.gem/
+# rough smoke test
+	&& ruby --version && gem --version && bundle --version
 
 # install things globally, for great justice
 # and don't create ".bundle" in all our apps
