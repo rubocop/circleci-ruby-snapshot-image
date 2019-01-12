@@ -33,20 +33,8 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-          name: Sign in to docker
-          command: echo $DOCKER_PASSWORD | docker login --username $DOCKER_USER --password-stdin
-      - run:
           name: Build the Ruby image
-          command: docker build -f Dockerfile.ruby -t rubocophq/ruby-snapshot:latest .
-      - run:
-          name: Push the Ruby image to Docker Hub
-          command: docker push rubocophq/ruby-snapshot:latest
-      - run:
-          name: Build the CircleCI variant of the Ruby image
-          command: docker build -f Dockerfile.circle -t rubocophq/circleci-ruby-snapshot:latest .
-      - run:
-          name: Push the CircleCI image to Docker Hub
-          command: docker push rubocophq/circleci-ruby-snapshot:latest
+          command: docker build -f Dockerfile.ruby .
 
 workflows:
   version: 2
@@ -54,6 +42,7 @@ workflows:
     jobs:
       - check-ruby-dockerfile-generation
       - check-circle-dockerfile-generation
+      - build
 
   # It looks like the snapshots are currently released to
   # https://cache.ruby-lang.org/pub/ruby/ around 12:30-12:40. E.g.
