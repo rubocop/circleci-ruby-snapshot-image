@@ -1,30 +1,6 @@
 version: 2
 jobs:
 
-  check-ruby-dockerfile-generation:
-    docker:
-      - image: circleci/ruby
-    steps:
-      - checkout
-      - run:
-          name: Re-generate Dockerfile.ruby
-          command: ./generate-ruby-dockerfile.sh
-      - run:
-          name: Check that Dockerfile.ruby is unchanged
-          command: git --no-pager diff --exit-code Dockerfile.ruby
-
-  check-circle-dockerfile-generation:
-    docker:
-      - image: circleci/ruby
-    steps:
-      - checkout
-      - run:
-          name: Re-generate Dockerfile.circle
-          command: ./generate-circle-dockerfile.sh
-      - run:
-          name: Check that Dockerfile.circle is unchanged
-          command: git --no-pager diff --exit-code Dockerfile.circle
-
   build:
     docker:
       - image: circleci/ruby
@@ -35,28 +11,20 @@ jobs:
       - run:
           name: Build the Ruby image
           command: docker build -f Dockerfile.ruby .
+  build-from-git:
+    docker:
+      - image: circleci/ruby
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Build the Ruby image
+          command: docker build -f Dockerfile.ruby-from-git .
 
 workflows:
   version: 2
   check-dockerfiles:
     jobs:
-      - check-ruby-dockerfile-generation
-      - check-circle-dockerfile-generation
       - build
-
-  # It looks like the snapshots are currently released to
-  # https://cache.ruby-lang.org/pub/ruby/ around 12:30-12:40. E.g.
-  # 2018-09-21T12:40:44.000Z
-  # We rebuild the master branch every day at 13:30.
-  daily:
-    jobs:
-      - check-ruby-dockerfile-generation
-      - check-circle-dockerfile-generation
-      - build
-    triggers:
-      - schedule:
-          cron: "30 13 * * *"
-          filters:
-            branches:
-              only:
-                - master
+      - build-from-git
