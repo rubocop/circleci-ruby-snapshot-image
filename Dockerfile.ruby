@@ -25,12 +25,12 @@ RUN set -ex \
 	&& apt-get install -y --no-install-recommends $buildDeps \
 	&& rm -rf /var/lib/apt/lists/* \
 	\
-	&& wget -O ruby.tar.xz "https://cache.ruby-lang.org/pub/ruby/snapshot.tar.xz" \
+	\
 	\
 	\
 	&& mkdir -p /usr/src/ruby \
-	&& tar -xJf ruby.tar.xz -C /usr/src/ruby --strip-components=1 \
-	&& rm ruby.tar.xz \
+	&& git clone --depth 1 https://github.com/ruby/ruby.git /usr/src/ruby \
+	\
 	\
 	&& cd /usr/src/ruby \
 	\
