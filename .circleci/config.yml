@@ -50,10 +50,15 @@ jobs:
 
 workflows:
   version: 2
-  check-dockerfiles:
+  on-branch-push:
     jobs:
       - check-ruby-dockerfile-generation
       - check-circle-dockerfile-generation
+      - build:
+          filters:
+            branches:
+              only:
+                - master
 
   # It looks like the snapshots are currently released to
   # https://cache.ruby-lang.org/pub/ruby/ around 12:30-12:40. E.g.
