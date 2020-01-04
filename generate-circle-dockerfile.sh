@@ -8,7 +8,7 @@ pushd $repository/ruby
 TAG="latest"
 
 # The manifest is usually a file like e.g.
-# https://github.com/docker-library/official-images/blob/master/library/ruby
+# https://github.com/docker-library/official-images/blob/56ceaf0cee/library/ruby
 # that the circleci-images script fetches with `curl`.
 # To make things easy, we write a file in the same format, with one tag (latest)
 # and tell the script that this file is available with the `file:` protocol.
