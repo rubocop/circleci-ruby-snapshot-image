@@ -8,6 +8,7 @@ RUN set -eux; \
 		echo 'update: --no-document'; \
 	} >> /usr/local/etc/gemrc
 
+ENV LANG C.UTF-8
 
 
 
