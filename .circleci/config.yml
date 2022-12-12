@@ -3,7 +3,7 @@ jobs:
 
   check-ruby-dockerfile-generation:
     docker:
-      - image: circleci/ruby
+      - image: cimg/ruby:3.1
     steps:
       - checkout
       - run:
@@ -15,7 +15,7 @@ jobs:
 
   check-circle-dockerfile-generation:
     docker:
-      - image: circleci/ruby
+      - image: cimg/ruby:3.1
     steps:
       - checkout
       - run:
@@ -27,7 +27,7 @@ jobs:
 
   build:
     docker:
-      - image: circleci/ruby
+      - image: cimg/ruby:3.1
     steps:
       - checkout
       - setup_remote_docker
